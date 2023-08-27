@@ -2,6 +2,7 @@ module main
 
 import os
 import cli
+import strings
 
 fn main() {
 	// Setting Useful variables
@@ -16,8 +17,8 @@ fn main() {
 
 
 	// Check if user created a vault
-	if os.exists("${home}/.vpass") == false {
-		println("It looks like you didn't create a password vault yet... Try using init")
+	if os.exists("${home}/.signum") == false {
+		println("It looks like you didn't create a password vault yet... Try using signum init")
 		exit(1)
 	}
 
@@ -25,8 +26,9 @@ fn main() {
         name: 'signum'
         description: 'Terminal-based password manager'
         version: '1.0.0'
+        required_args: 1
         execute: fn (cmd cli.Command) ! {
-            println("Wrong usage. Run with --help flag to see current commands.")
+            retrieve_password(os.args[1])
             return
         }
         commands: [
@@ -67,6 +69,16 @@ fn main() {
                 description: 'Lists your passwords'
                 execute: fn (cmd cli.Command) ! {
                     list()
+                    return
+                }
+            }
+            cli.Command{
+                name: 'search'
+                usage: '<password>'
+				required_args: 1
+                description: 'Search your passwords'
+                execute: fn (cmd cli.Command) ! {
+                    search(os.args[2])
                     return
                 }
             }
@@ -142,5 +154,35 @@ fn list() {
 
 	for thing in list {
 		println("-- ${thing}")
+	}
+}
+
+
+fn retrieve_password(password_path string) {
+	// Setting Useful variables
+	home := os.home_dir()
+
+	os.system("ccrypt -c ${home}/.signum/${password_path}")
+	println("")
+}
+
+
+fn search(password_path string) {
+
+	// Setting Useful variables
+	home := os.home_dir()
+	mut result := []string{}
+
+	list := os.ls("${home}/.signum/") or { panic(err) }
+
+	for pass in list {
+		queries := strings.levenshtein_distance_percentage(pass, password_path)
+		if queries > 40 {
+				result << pass
+		}
+	}
+
+	for pkg in result {
+		println("\033[34;1m\033[0m\033[1m-- ${pkg}\033[0m")
 	}
 }

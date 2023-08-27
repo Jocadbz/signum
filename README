@@ -15,6 +15,9 @@ Since this ins't a software that uses GPG, we will ask you for passwords a lot.
 And of course, ccrypt double checks your password, but if you type any password wrong
 while creating, it will be lost forever.
 
+Known issues:
+Signum does not support folders. This is not a bug, but rather a feature.
+
 Big Thanks to Pete Selinger (Author of ccrypt)
 
 Changelog:
