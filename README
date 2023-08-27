@@ -1,0 +1,23 @@
+SIGNUM
+
+This is a password manager written in (basically) pure V.
+Why I wrote this? Simple. I hate GPG.
+
+Depends heavily on ccrypt (https://ccrypt.sourceforge.net/), and this software will
+refuse to run without it.
+
+Benefits over PASS:
+- You can have different passwords for different files (dunno why you would want to do this)
+- Absolutely no information required, except your password
+
+Important Stuff:
+Since this ins't a software that uses GPG, we will ask you for passwords a lot.
+And of course, ccrypt double checks your password, but if you type any password wrong
+while creating, it will be lost forever.
+
+Big Thanks to Pete Selinger (Author of ccrypt)
+
+Changelog:
+
+(1.0.0)
+- Initial release
