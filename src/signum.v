@@ -80,16 +80,14 @@ fn vault_init() {
 	// Setting Useful variables
 	home := os.home_dir()
 
-	if os.exists("${home}/.vpass") == true {
+	if os.exists("${home}/.signum") == true {
 		println("You already have a password vault")
 		exit(0)
 	}
 
 
 	//Now let's actually do stuff
-	user_name := os.input("Enter your Username: ")
-	os.mkdir("${home}/.vpass") or { panic(err) }
-	os.write_file("${home}/.vpass/.username", user_name) or { panic(err) }
+	os.mkdir("${home}/.signum") or { panic(err) }
 	println("Your password vault was created!")
 }
 
@@ -99,18 +97,18 @@ fn create(password_path string) {
 	editor := os.getenv("EDITOR")
 
 
-	os.create("${home}/.vpass/${password_path}") or {
+	os.create("${home}/.signum/${password_path}") or {
 		println("Something went wrong.")
 		exit(1)
 	}
 
 	if editor == "" {
-		os.system("vi ${home}/.vpass/${password_path}")
+		os.system("vi ${home}/.signum/${password_path}")
 	} else {
-		os.system("${editor} ${home}/.vpass/${password_path}")
+		os.system("${editor} ${home}/.signum/${password_path}")
 	}
 
-	os.system("ccrypt -e -s ${home}/.vpass/${password_path}")
+	os.system("ccrypt -e -s ${home}/.signum/${password_path}")
 }
 
 fn edit(password_path string) {
@@ -122,16 +120,16 @@ fn edit(password_path string) {
 		println("This password does not exist.")
 		exit(1)
 	} else {
-		os.system("ccrypt -d ${home}/.vpass/${password_path}")
+		os.system("ccrypt -d ${home}/.signum/${password_path}")
 	}
 
 	if editor == "" {
-		os.system("vi ${home}/.vpass/${password_path}")
+		os.system("vi ${home}/.signum/${password_path}")
 	} else {
-		os.system("${editor} ${home}/.vpass/${password_path}")
+		os.system("${editor} ${home}/.signum/${password_path}")
 	}
 
-	os.system("ccrypt -e -s ${home}/.vpass/${password_path}")
+	os.system("ccrypt -e -s ${home}/.signum/${password_path}")
 }
 
 
@@ -140,7 +138,7 @@ fn list() {
 	// Setting Useful variables
 	home := os.home_dir()
 
-	list := os.ls("${home}/.vpass/") or { panic(err) }
+	list := os.ls("${home}/.signum/") or { panic(err) }
 
 	for thing in list {
 		println("-- ${thing}")
