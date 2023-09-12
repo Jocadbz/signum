@@ -18,8 +18,7 @@ fn main() {
 
 	// Check if user created a vault
 	if os.exists("${home}/.signum") == false {
-		println("It looks like you didn't create a password vault yet... Try using signum init")
-		exit(1)
+		vault_init()
 	}
 
 	mut app := cli.Command{
